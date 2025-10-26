@@ -11,6 +11,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Header() {
   const pathname = usePathname();
@@ -34,9 +35,18 @@ export default function Header() {
   return (
     <header className='fixed top-0 w-full z-50 bg-gradient-to-r from-accent to-accent/0'>
       <div className='max-w-6xl mx-auto px-6 py-4 flex items-center justify-between'>
-        {/* Logo / Home */}
-
-        <Link href='/' className='text-2xl font-heading font-bold text-brand'>
+        <Link
+          href='/'
+          className='text-2xl font-heading font-bold text-brand flex'
+        >
+          {/* Logo / Home */}
+          <Image
+            src='/images/logo.png'
+            alt='Logo'
+            width={50}
+            height={50}
+            className='mr-2'
+          />
           Cloud Explorer
         </Link>
 

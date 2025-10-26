@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Cloud } from 'lucide-react';
+import Link from 'next/link';
 
 const images = [
   '/images/hero_1.jpg',
@@ -16,52 +18,122 @@ export default function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000); // 5 seconds
-
+    }, 5000); // rotate every 5s
     return () => clearInterval(interval);
   }, []);
 
+  // 🌫️ Parallax scroll effect
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 400], [0, 60]);
+
+  // 🔮 Animation variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  };
+
+  const container = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.25,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const handleScrollToSolution = () => {
+    const section = document.getElementById('solution');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className='relative flex flex-col items-center justify-center text-center py-32 px-4 overflow-hidden'>
-      {/* Rotating background images */}
+      {/* 🪶 Parallax rotating background images */}
       {images.map((src, index) => (
-        <div
+        <motion.div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentImage ? 'opacity-100' : 'opacity-0'
-          }`}
           style={{
+            y,
             backgroundImage: `url(${src})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            zIndex: 0, // ensure it's behind content
+            zIndex: 0,
           }}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentImage ? 'opacity-100' : 'opacity-0'
+          }`}
         />
       ))}
 
-      {/* Optional overlay for gradient / readability */}
-      <div className='absolute inset-0 bg-gradient-to-b from-[#0B0E12] via-[#0B0E12]/70 to-transparent pointer-events-none z-10' />
+      {/* Gradient overlay */}
+      <div className='absolute inset-0 bg-gradient-to-b from-[#0B0E12]/95 via-[#0B0E12]/70 to-transparent pointer-events-none z-10' />
 
-      {/* Hero content */}
-      <Cloud className='w-16 h-16 text-accent mb-6 animate-pulse relative z-20' />
-      <h1 className='text-5xl font-bold mb-4 text-white bg-clip-text  relative z-20 shadow-2xl'>
-        See Your Clouds. Secure Your Future.
-      </h1>
-      <p className='max-w-2xl text-gray-400 mb-8 relative z-20 shadow-2xl'>
-        A unified multi-cloud JSON explorer for engineers, auditors, and
-        compliance teams.
-      </p>
-      <div className='flex gap-4 relative z-20'>
-        <Button className='bg-accent text-black font-semibold hover:bg-accent-hover shadow-2xl cursor-pointer hover:text-white'>
-          Try the Demo
-        </Button>
-        <Button
-          variant='outline'
-          className='border-accent text-accent bg-primary hover:bg-accent/10 hover:text-white font-semibold shadow-2xl cursor-pointer'
+      {/* 🔥 Animated hero content */}
+      <motion.div
+        initial='hidden'
+        animate='visible'
+        variants={container}
+        className='relative z-20 flex flex-col items-center'
+      >
+        {/* Cloud Icon */}
+        <motion.div variants={fadeUp}>
+          <Cloud className='w-16 h-16 text-accent mb-6 animate-pulse' />
+        </motion.div>
+
+        {/* Title with glowing pulse */}
+        <motion.h1
+          variants={fadeUp}
+          animate={{
+            textShadow: [
+              '0 0 0px #0070f3',
+              '0 0 12px #0070f3',
+              '0 0 0px #0070f3',
+            ],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: 'mirror',
+          }}
+          className='text-5xl font-bold mb-4 text-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]'
         >
-          Learn More
-        </Button>
-      </div>
+          See Your Clouds. Secure Your Future.
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p variants={fadeUp} className='max-w-2xl text-gray-400 mb-8'>
+          A unified multi-cloud visibility platform that maps your
+          infrastructure to compliance frameworks in real time — empowering
+          engineers, auditors, and security teams to eliminate blind spots.
+        </motion.p>
+
+        {/* Buttons */}
+        <motion.div variants={fadeUp} className='flex gap-4'>
+          <Button className='bg-accent text-black font-semibold hover:bg-accent-hover hover:text-white shadow-2xl cursor-pointer'>
+            <Link
+              href='https://cloud-explorer.azurewebsites.net/'
+              target='_blank'
+            >
+              Try the Demo
+            </Link>
+          </Button>
+          <Button
+            variant='outline'
+            onClick={handleScrollToSolution}
+            className='border-accent text-accent bg-primary hover:bg-accent/10 hover:text-white font-semibold shadow-2xl cursor-pointer'
+          >
+            Learn More
+          </Button>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

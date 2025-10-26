@@ -8,17 +8,18 @@ export default function CTASection() {
       </h2>
       <p className='text-gray-400 mb-10'>
         Start your journey toward secure, transparent, and compliant multi-cloud
-        visibility.
+        visibility. Join the early access program or try the interactive demo
+        now.
       </p>
       <div className='flex justify-center gap-4'>
         <Button className='bg-accent text-black hover:bg-accent-hover font-semibold cursor-pointer hover:text-white'>
-          Request a Demo
+          Try Cloud Explorer
         </Button>
         <Button
           variant='outline'
           className='border-accent text-accent bg-primary hover:bg-accent/10 hover:text-white font-semibold cursor-pointer'
         >
-          View on GitHub
+          Request Access
         </Button>
       </div>
     </section>
