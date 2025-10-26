@@ -1,6 +1,7 @@
 'use client';
 import { Brain, Cloud, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function SolutionSection() {
   return (
@@ -58,7 +59,12 @@ export default function SolutionSection() {
             className='w-full max-w-[600px] aspect-video rounded-2xl border border-accent/40 backdrop-blur-sm bg-gradient-to-br from-accent/10 to-accent-hover/5 flex items-center justify-center'
           >
             <span className='text-accent font-medium text-lg'>
-              [Dashboard Preview Placeholder]
+              <Image
+                src='/images/dashboard.jpg.avif'
+                alt='Dashboard'
+                width={600}
+                height={400}
+              />
             </span>
           </motion.div>
         </div>

@@ -18,10 +18,10 @@ export default function Header() {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Vision', href: '/vision' },
-    { name: 'Teams', href: '/teams' },
-    { name: 'Contact', href: '/contact' },
+    // { name: 'About', href: '/about' },
+    // { name: 'Vision', href: '/vision' },
+    // { name: 'Teams', href: '/teams' },
+    // { name: 'Contact', href: '/contact' },
   ];
 
   const linkClasses = (isActive) =>
@@ -61,9 +61,9 @@ export default function Header() {
               {item.name}
             </Link>
           ))}
-          <Button className='ml-4 bg-gradient-brand text-white hover:opacity-90 cursor-pointer'>
+          {/* <Button className='ml-4 bg-gradient-brand text-white hover:opacity-90 cursor-pointer'>
             Join
-          </Button>
+          </Button> */}
         </nav>
 
         {/* Mobile nav */}
@@ -93,9 +93,9 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <Button className='mt-4 bg-gradient-brand text-white hover:opacity-90 cursor-pointer'>
+                {/* <Button className='mt-4 bg-gradient-brand text-white hover:opacity-90 cursor-pointer'>
                   Join
-                </Button>
+                </Button> */}
               </nav>
             </SheetContent>
           </Sheet>
