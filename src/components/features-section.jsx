@@ -27,9 +27,14 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section
+    <motion.section
       id='features'
       className='py-32 bg-gradient-to-b from-[#0B0E12] via-[#0B0E12]/70 border-t border-muted'
+      initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      viewport={{ once: true, amount: 0.2 }}
+      style={{ willChange: 'opacity, transform, filter' }}
     >
       <div className='max-w-6xl mx-auto px-6 text-center'>
         <h2 className='text-3xl font-bold mb-6 text-foreground'>
@@ -40,10 +45,30 @@ export default function FeaturesSection() {
           interface.
         </p>
 
-        <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
+        <motion.div
+          className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+            },
+          }}
+        >
           {features.map((f, i) => (
             <motion.div
               key={i}
+              variants={{
+                hidden: { opacity: 0, y: 25, filter: 'blur(6px)' },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  filter: 'blur(0px)',
+                  transition: { duration: 0.6, ease: 'easeOut' },
+                },
+              }}
               initial={{ backgroundColor: 'rgba(20, 25, 35, 0.4)' }}
               whileHover={{
                 backgroundColor: 'rgba(0, 102, 255, 0.2)',
@@ -59,8 +84,8 @@ export default function FeaturesSection() {
               <p className='text-gray-400 text-sm'>{f.desc}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

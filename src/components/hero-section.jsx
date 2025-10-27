@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Cloud } from 'lucide-react';
 import Link from 'next/link';
 
 const images = [
@@ -15,10 +14,19 @@ const images = [
 export default function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
 
+  // 🖼️ Preload images to prevent initial stutter
+  useEffect(() => {
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // 🔁 Rotate background images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000); // rotate every 5s
+    }, 5000); // every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -26,14 +34,19 @@ export default function HeroSection() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 400], [0, 60]);
 
-  // 🔮 Animation variants
+  // 🔮 Smooth animation variants
   const fadeUp = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      filter: 'blur(4px)',
+      willChange: 'opacity, transform, filter',
+    },
     visible: {
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }, // smooth cubic-bezier
     },
   };
 
@@ -41,8 +54,8 @@ export default function HeroSection() {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.25,
-        delayChildren: 0.3,
+        staggerChildren: 0.18, // slightly faster stagger
+        delayChildren: 0.15, // start a bit earlier
       },
     },
   };
@@ -73,7 +86,7 @@ export default function HeroSection() {
         />
       ))}
 
-      {/* Gradient overlay */}
+      {/* 🌌 Gradient overlay */}
       <div className='absolute inset-0 bg-gradient-to-b from-[#0B0E12]/95 via-[#0B0E12]/70 to-transparent pointer-events-none z-10' />
 
       {/* 🔥 Animated hero content */}
@@ -83,14 +96,10 @@ export default function HeroSection() {
         variants={container}
         className='relative z-20 flex flex-col items-center'
       >
-        {/* Cloud Icon */}
-        <motion.div variants={fadeUp}>
-          <Cloud className='w-16 h-16 text-accent mb-6 animate-pulse' />
-        </motion.div>
-
-        {/* Title with glowing pulse */}
+        {/* 🌟 Title with glowing pulse */}
         <motion.h1
           variants={fadeUp}
+          style={{ willChange: 'transform, opacity, filter' }}
           animate={{
             textShadow: [
               '0 0 0px #0070f3',
@@ -103,19 +112,23 @@ export default function HeroSection() {
             repeat: Infinity,
             repeatType: 'mirror',
           }}
-          className='text-5xl font-bold mb-4 text-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]'
+          className='text-5xl font-bold mb-6 text-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]'
         >
           See Your Clouds. Secure Your Future.
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p variants={fadeUp} className='max-w-2xl text-gray-400 mb-8'>
+        {/* 💬 Subtitle */}
+        <motion.p
+          variants={fadeUp}
+          style={{ willChange: 'transform, opacity, filter' }}
+          className='max-w-2xl text-gray-400 mb-10'
+        >
           A unified multi-cloud visibility platform that maps your
           infrastructure to compliance frameworks in real time — empowering
           engineers, auditors, and security teams to eliminate blind spots.
         </motion.p>
 
-        {/* Buttons */}
+        {/* 🎛️ Buttons */}
         <motion.div variants={fadeUp} className='flex gap-4'>
           <Button className='bg-accent text-black font-semibold hover:bg-accent-hover hover:text-white shadow-2xl cursor-pointer'>
             <Link

@@ -4,6 +4,12 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 export default function SolutionSection() {
+  // Animation variants for fade-up effect
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
     <section
       id='solution'
@@ -11,7 +17,12 @@ export default function SolutionSection() {
     >
       <div className='max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center'>
         {/* Left side: Text content */}
-        <div>
+        <motion.div
+          variants={fadeUp}
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <h2 className='text-3xl font-bold mb-6 text-foreground'>
             Unified insights across AWS, Azure, and GCP.
           </h2>
@@ -35,10 +46,16 @@ export default function SolutionSection() {
               Unified JSON explorer across multi-cloud environments
             </li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Right side: Glowing Dashboard Preview */}
-        <div className='relative flex justify-center w-full'>
+        <motion.div
+          variants={fadeUp}
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true, amount: 0.2 }}
+          className='relative flex justify-center w-full'
+        >
           <motion.div
             initial={{
               boxShadow: '0 0 25px rgba(0, 102, 255, 0.4)',
@@ -56,18 +73,17 @@ export default function SolutionSection() {
               repeat: Infinity,
               ease: 'easeInOut',
             }}
-            className='w-full max-w-[600px] aspect-video rounded-2xl border border-accent/40 backdrop-blur-sm bg-gradient-to-br from-accent/10 to-accent-hover/5 flex items-center justify-center'
+            className='w-full max-w-[600px] aspect-video rounded-2xl border border-accent/40 backdrop-blur-sm bg-gradient-to-br from-accent/10 to-accent-hover/5 flex items-center justify-center overflow-hidden'
           >
-            <span className='text-accent font-medium text-lg'>
-              <Image
-                src='/images/dashboard.jpg.avif'
-                alt='Dashboard'
-                width={600}
-                height={400}
-              />
-            </span>
+            <Image
+              src='/images/dashboard.jpg.avif'
+              alt='Dashboard'
+              width={600}
+              height={400}
+              className='rounded-2xl'
+            />
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,8 +1,17 @@
+'use client';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
 export default function CTASection() {
   return (
-    <section className='py-24 bg-gradient-to-b from-[#0B0E12] via-[#0B0E12]/70 border-t border-muted text-center'>
+    <motion.section
+      className='py-24 bg-gradient-to-b from-[#0B0E12] via-[#0B0E12]/70 border-t border-muted text-center'
+      initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      viewport={{ once: true, amount: 0.2 }}
+      style={{ willChange: 'opacity, transform, filter' }}
+    >
       <h2 className='text-3xl font-bold mb-6 text-foreground'>
         Ready to explore your clouds?
       </h2>
@@ -22,6 +31,6 @@ export default function CTASection() {
           Request Access
         </Button>
       </div>
-    </section>
+    </motion.section>
   );
 }

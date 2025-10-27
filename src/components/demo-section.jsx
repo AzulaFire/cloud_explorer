@@ -3,9 +3,14 @@ import { motion } from 'framer-motion';
 
 export default function DemoSection() {
   return (
-    <section
+    <motion.section
       id='demo'
       className='py-32 bg-gradient-to-b from-[#0B0E12] via-[#0B0E12]/70 border-t border-muted text-center'
+      initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      viewport={{ once: true, amount: 0.2 }}
+      style={{ willChange: 'opacity, transform, filter' }}
     >
       <div className='max-w-4xl mx-auto px-6'>
         <h2 className='text-3xl font-bold mb-6 text-foreground'>
@@ -48,6 +53,6 @@ export default function DemoSection() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
