@@ -135,7 +135,7 @@ export default function HeroSection() {
               href='https://cloud-explorer.azurewebsites.net/'
               target='_blank'
             >
-              Try the Demo
+              Try Cloud Explorer
             </Link>
           </Button>
           <Button

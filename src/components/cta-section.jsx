@@ -1,6 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import RequestDemoModal from './request-demo-model';
+import Link from 'next/link';
 
 export default function CTASection() {
   return (
@@ -20,16 +22,20 @@ export default function CTASection() {
         visibility. Join the early access program or try the interactive demo
         now.
       </p>
+
       <div className='flex justify-center gap-4'>
+        {/* Regular Try button */}
         <Button className='bg-accent text-black hover:bg-accent-hover font-semibold cursor-pointer hover:text-white'>
-          Try Cloud Explorer
+          <Link
+            href='https://cloud-explorer.azurewebsites.net/'
+            target='_blank'
+          >
+            Try Cloud Explorer
+          </Link>
         </Button>
-        <Button
-          variant='outline'
-          className='border-accent text-accent bg-primary hover:bg-accent/10 hover:text-white font-semibold cursor-pointer'
-        >
-          Request Access
-        </Button>
+
+        {/* Request Demo modal button */}
+        <RequestDemoModal />
       </div>
     </motion.section>
   );
