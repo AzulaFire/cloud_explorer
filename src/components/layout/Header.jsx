@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import Image from 'next/image';
+import ServiceStatus from '@/components/service-status';
 
 export default function Header() {
   const pathname = usePathname();
@@ -19,9 +20,6 @@ export default function Header() {
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    // { name: 'Vision', href: '/vision' },
-    // { name: 'Teams', href: '/teams' },
-    // { name: 'Contact', href: '/contact' },
   ];
 
   const linkClasses = (isActive) =>
@@ -33,19 +31,20 @@ export default function Header() {
     );
 
   return (
-    <header className='fixed top-0 w-full z-50 bg-gradient-to-r from-accent to-accent/0'>
-      <div className='max-w-6xl mx-auto px-6 py-4 flex items-center justify-between'>
+    <header className='fixed top-0 w-full z-50 bg-gradient-to-r from-accent to-accent/0 min-h-[70px]'>
+      <div className='max-w-6xl mx-auto px-6 py-4 flex items-center justify-between min-h-[62px]'>
+        {/* Logo / Home */}
         <Link
           href='/'
-          className='text-2xl font-heading font-bold text-brand flex'
+          className='text-2xl font-heading font-bold text-brand flex items-center'
         >
-          {/* Logo / Home */}
           <Image
             src='/images/logo.png'
             alt='Logo'
             width={50}
             height={50}
-            className='mr-2'
+            className='mr-2 object-contain'
+            priority
           />
           Cloud Explorer
         </Link>
@@ -61,9 +60,9 @@ export default function Header() {
               {item.name}
             </Link>
           ))}
-          {/* <Button className='ml-4 bg-gradient-brand text-white hover:opacity-90 cursor-pointer'>
-            Join
-          </Button> */}
+          <div className='ml-4'>
+            <ServiceStatus />
+          </div>
         </nav>
 
         {/* Mobile nav */}
@@ -79,8 +78,8 @@ export default function Header() {
               className='w-64 bg-gradient-to-b from-[#0B0E12] via-[#0B0E12]/70 text-text-primary'
             >
               <SheetHeader>
-                <SheetTitle className='text-lg font-bold'>
-                  Navigation
+                <SheetTitle className='text-lg font-bold flex items-center gap-2'>
+                  <ServiceStatus /> {/* ✅ Visible on mobile */}
                 </SheetTitle>
               </SheetHeader>
               <nav className='mt-4 flex flex-col py-4 px-6 gap-4'>
@@ -93,9 +92,6 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                {/* <Button className='mt-4 bg-gradient-brand text-white hover:opacity-90 cursor-pointer'>
-                  Join
-                </Button> */}
               </nav>
             </SheetContent>
           </Sheet>

@@ -1,4 +1,6 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
   try {
@@ -8,84 +10,42 @@ export async function POST(req) {
     if (!name || !email) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields' }),
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
-    // Detect Gmail and auto-adjust settings if needed
-    const isGmail =
-      process.env.SMTP_HOST?.includes('gmail.com') ||
-      process.env.SMTP_USER?.endsWith('@gmail.com');
+    // Compose email
+    const subject = `New Demo Request from ${name}`;
+    const html = `
+      <h2>New Demo Request</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Company:</strong> ${company || '(none provided)'}</p>
+      <p><strong>Message:</strong><br/>${
+        message?.replace(/\n/g, '<br/>') || '(no message)'
+      }</p>
+    `;
 
-    // Use Gmail-friendly defaults if applicable
-    const transporter = nodemailer.createTransport({
-      host: isGmail ? 'smtp.gmail.com' : process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || (isGmail ? 465 : 587)),
-      secure: process.env.SMTP_SECURE
-        ? process.env.SMTP_SECURE === 'true'
-        : isGmail, // Gmail requires SSL (port 465)
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: isGmail
-        ? {
-            rejectUnauthorized: false,
-          }
-        : undefined,
+    // Send via Resend
+    const data = await resend.emails.send({
+      from: 'Cloud Explorer <onboarding@resend.dev>', // this is allowed for free tier
+      to: process.env.PRODUCT_MANAGER_EMAIL,
+      reply_to: email,
+      subject,
+      html,
     });
 
-    const mailOptions = {
-      from: `"Cloud Explorer" <${process.env.SMTP_USER}>`,
-      to: process.env.PRODUCT_MANAGER_EMAIL || process.env.SMTP_USER,
-      subject: `New Demo Request from ${name}`,
-      text: `
-Name: ${name}
-Email: ${email}
-Company: ${company}
-Message:
-${message}
-      `,
-      html: `
-        <h2>New Demo Request</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Company:</strong> ${company}</p>
-        <p><strong>Message:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>
-      `,
-    };
+    if (data.error) {
+      console.error('❌ Resend API error:', data.error);
+      return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+        status: 500,
+      });
+    }
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent successfully:', info.messageId);
-
+    console.log('✅ Email sent:', data.id);
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
   } catch (err) {
-    console.error('❌ request-demo error:', err);
-
-    // Provide Gmail-specific guidance if auth or connection fails
-    if (err.message?.includes('Invalid login') || err.code === 'EAUTH') {
-      console.error(`
-⚠️ Gmail authentication failed.
-If you're using a Gmail account, make sure to:
-  1. Enable 2-Step Verification in your Google account.
-  2. Create an "App Password" for this project:
-     https://myaccount.google.com/apppasswords
-  3. Use that 16-character app password as SMTP_PASS.
-`);
-    }
-
-    if (err.code === 'ECONNECTION' || err.code === 'ETIMEDOUT') {
-      console.error(`
-⚠️ Connection to SMTP server failed.
-If using Gmail, make sure less-secure app access is OFF,
-and that you're using the correct port:
-  - 465 (secure, recommended)
-  - 587 (non-secure STARTTLS)
-`);
-    }
-
+    console.error('❌ API Error:', err);
     return new Response(JSON.stringify({ error: 'Failed to send email' }), {
       status: 500,
     });

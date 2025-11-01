@@ -1,0 +1,36 @@
+{
+  "status": "online",
+  "message": "All systems operational."
+}
+
+
+
+{
+  "status": "maintenance",
+  "message": "Cloud Explorer is currently down for scheduled maintenance. Please check back soon."
+}
+
+
+{
+  "status": "offline",
+  "message": "Cloud Explorer is offline. Please check back soon."
+}
+
+
+  //   useEffect(() => {
+  //     const fetchStatus = async () => {
+  //       try {
+  //         const res = await fetch('/status.json', { cache: 'no-store' });
+  //         const data = await res.json();
+  //         setStatus(data.status || 'unknown');
+  //         setMessage(data.message || '');
+  //       } catch (error) {
+  //         setStatus('unknown');
+  //         setMessage('Unable to retrieve status');
+  //       }
+  //     };
+
+  //     fetchStatus();
+  //     const interval = setInterval(fetchStatus, 60000); // refresh every 60s
+  //     return () => clearInterval(interval);
+  //   }, []);
