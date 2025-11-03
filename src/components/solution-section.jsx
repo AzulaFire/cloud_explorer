@@ -76,7 +76,7 @@ export default function SolutionSection() {
             className='w-full max-w-[600px] aspect-video rounded-2xl border border-accent/40 backdrop-blur-sm bg-gradient-to-br from-accent/10 to-accent-hover/5 flex items-center justify-center overflow-hidden'
           >
             <Image
-              src='/images/dashboard.jpg.avif'
+              src='/images/dashboard.png'
               alt='Dashboard'
               width={600}
               height={400}
