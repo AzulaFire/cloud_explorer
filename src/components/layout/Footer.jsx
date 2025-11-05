@@ -30,7 +30,7 @@ export default function Footer() {
         {/* Social icons */}
         <div className='flex space-x-6'>
           <Link
-            href='https://www.linkedin.com/'
+            href='https://www.linkedin.com/in/stackattack/'
             target='_blank'
             rel='noopener noreferrer'
             className='text-gray-400 hover:text-accent transition-colors hover:scale-110 transform'
@@ -46,7 +46,7 @@ export default function Footer() {
             <Twitter className='w-5 h-5' />
           </Link>
           <Link
-            href='https://github.com/'
+            href='https://github.com/centerupt-stacks'
             target='_blank'
             rel='noopener noreferrer'
             className='text-gray-400 hover:text-accent transition-colors hover:scale-110 transform'
@@ -54,7 +54,7 @@ export default function Footer() {
             <Github className='w-5 h-5' />
           </Link>
           <Link
-            href='https://youtube.com/'
+            href='https://www.youtube.com/@TheCenterupt'
             target='_blank'
             rel='noopener noreferrer'
             className='text-gray-400 hover:text-accent transition-colors hover:scale-110 transform'

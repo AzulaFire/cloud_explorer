@@ -20,6 +20,7 @@ export default function Header() {
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
+    { name: 'Team', href: '/team' },
   ];
 
   const linkClasses = (isActive) =>
